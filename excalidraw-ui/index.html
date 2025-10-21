@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Excalidraw UI – Multi-filter & Calendar Layout</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo">⧉</div>
+      <div class="brand-text">
+        <div class="brand-name">peerstack</div>
+        <div class="brand-sub">academy</div>
+      </div>
+    </div>
+    <div class="user-menu">
+      <button id="avatarBtn" class="avatar-btn" aria-haspopup="true" aria-expanded="false">
+        <span class="avatar-ico">👤</span>
+      </button>
+      <div id="userDropdown" class="dropdown" hidden>
+        <button id="btnLogout" class="dropdown-item">
+          <span class="item-ico" aria-hidden="true">↩</span>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="left">
+      <div class="panel filters">
+        <h2 class="panel-title">Multi-filter</h2>
+        <form id="filterForm" class="filter-grid" onsubmit="return false;">
+          <label class="field">
+            <span>Name</span>
+            <input type="text" id="fName" placeholder="" />
+          </label>
+          <label class="field">
+            <span>FIN</span>
+            <input type="text" id="fFin" placeholder="" />
+          </label>
+          <label class="field">
+            <span>From</span>
+            <input type="date" id="fFrom" />
+          </label>
+          <label class="field">
+            <span>To</span>
+            <input type="date" id="fTo" />
+          </label>
+          <label class="field">
+            <span>Role</span>
+            <select id="fRole">
+              <option value="">All</option>
+              <option>Staff</option>
+              <option>Guest</option>
+            </select>
+          </label>
+          <div class="btn-row">
+            <button type="button" id="btnSearch" class="btn primary">Search</button>
+            <button type="button" id="btnReset" class="btn">Reset</button>
+            <button type="button" id="btnToday" class="btn">Today</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel table-panel">
+        <div class="table-toolbar">
+          <input id="tableSearch" class="search" type="text" placeholder="Search..." />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>FullName</th>
+                <th>FIN</th>
+                <th>Date and Time</th>
+                <th>Role</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+          <div id="emptyState" class="empty" style="position: relative;padding-block: 30px;">No data available</div>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </section>
+    <aside class="right">
+      <div class="panel calendar">
+        <div class="calendar-top">
+          <button id="prevDay" class="btn sm">prev</button>
+          <div class="calendar-date" id="currentDate">date</div>
+          <button id="nextDay" class="btn sm">next</button>
+        </div>
+        <input id="calendarSearch" class="search" type="text" placeholder="Search..." />
+        <div class="calendar-grid" id="calendarGrid"></div>
+        <div class="role-counters">
+          <span class="tag" id="staffCount">Staff - 0</span>
+          <span class="tag" id="guestCount">Guest - 0</span>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer-note">Prepared by Taghiyev Mahammad</footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
