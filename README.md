@@ -35,15 +35,11 @@ Designed according to Figures **1.0** and **1.1**.
 ---
 
 ## 🚀 Live Demo
-🔗 [View Live Demo](#)  
+🔗 [https://peerstackfinal.netlify.app/](#)  
 ---
 
 ## 📂 Installation
 ```bash
 # Clone this repository
 git clone https://github.com/TaghiyevMahammad/Peerstack-Final.git
-
-# Navigate to the project folder
-cd excalidraw-ui
-
 # Open index.html or start the dev server 
