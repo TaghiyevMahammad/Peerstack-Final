@@ -35,7 +35,7 @@ Designed according to Figures **1.0** and **1.1**.
 ---
 
 ## 🚀 Live Demo
-🔗 [https://peerstackfinal.netlify.app/](#)  
+https://peerstackfinal.netlify.app/
 ---
 
 ## 📂 Installation
