@@ -4,7 +4,9 @@
 
 html,
 body {
-  height: 100%
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
 }
 
 body {
@@ -134,7 +136,6 @@ body {
   color: #334155
 }
 
-/* Filters */
 .filter-grid {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
@@ -178,9 +179,22 @@ body {
   cursor: pointer
 }
 
+.btn:hover {
+  background: black;
+  color:white;
+  border-color: black;
+  transition: 0.8s;
+}
+
 .btn.primary {
   border-color: #3b82f6;
   color: #1e40af
+}
+
+.btn.primary:hover {
+  background: #1e40af;
+  color: white;
+  border-color: #1e40af;
 }
 
 .btn.sm {
@@ -206,7 +220,8 @@ body {
   border-radius: 8px;
   padding: 0 10px;
   width: 240px;
-  background: #fff
+  background: #fff;
+  margin-bottom: 10px;
 }
 
 .table-wrap {
