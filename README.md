@@ -1,5 +1,7 @@
 # Peerstack-Final
 
+LIVE DEMO : https://peerstackfinal.netlify.app/
+
 # Multi-filter & Calendar UI
 
 A clean and functional user interface that includes a **Multi-filter search system** and a **Calendar-based event view**.  
