@@ -1,3 +1,11 @@
+// Enforce login: if not logged in, redirect to login.html
+try{
+  const isLoginPage = window.location.pathname.toLowerCase().endsWith('login.html');
+  if(!isLoginPage && localStorage.getItem('loggedIn') !== 'true'){
+    window.location.href = 'login.html';
+  }
+}catch(e){ /* ignore in restricted environments */ }
+
 const tableBody = document.getElementById("tableBody");
 const emptyState = document.getElementById("emptyState");
 const pagination = document.getElementById("pagination");
@@ -54,7 +62,8 @@ function seedData(){
   return arr;
 }
 
-const DATA = seedData();
+// Prefer external data if provided in data.js (window.TABLE_DATA). Otherwise use seeded data.
+const DATA = (window.TABLE_DATA && Array.isArray(window.TABLE_DATA) && window.TABLE_DATA.length>0) ? window.TABLE_DATA : seedData();
 
 function filterData(){
   let q = tableSearch.value.trim().toLowerCase();
@@ -64,7 +73,6 @@ function filterData(){
   const roleVal = fRole.value;
   const fromVal = fFrom.value;
   const toVal = fTo.value;
-  const selectedDateStr = fmtDateOnly(selectedDate);
 
   let res = DATA.filter(item => {
     let ok = true;
@@ -75,8 +83,9 @@ function filterData(){
     if (toVal) ok = ok && new Date(item.datetime) <= new Date(parseISODate(toVal).getTime()+86400000-1);
     if (q) ok = ok && (item.name.toLowerCase().includes(q) || item.fin.toLowerCase().includes(q) || item.role.toLowerCase().includes(q));
     if (cq) ok = ok && (item.name.toLowerCase().includes(cq) || item.fin.toLowerCase().includes(cq));
-    const d = fmtDateOnly(new Date(item.datetime));
-    ok = ok && d === selectedDateStr;
+    // date filtering: respect From/To inputs if present
+    if(fromVal){ ok = ok && (fmtDateOnly(new Date(item.datetime)) >= fromVal); }
+    if(toVal){ ok = ok && (fmtDateOnly(new Date(item.datetime)) <= toVal); }
     return ok;
   });
   return res;
@@ -102,7 +111,13 @@ function renderTable(){
   emptyState.style.display = total === 0 ? "grid" : "none";
 
   renderPagination(totalPages);
-  updateRoleCounters(items);
+  // Update counters: if checkbox toggled, show filtered counts; otherwise show global totals
+  const showFiltered = document.getElementById('showFilteredCounts')?.checked;
+  if(showFiltered){
+    updateRoleCounters(items);
+  } else {
+    updateRoleCounters();
+  }
 }
 
 function renderPagination(totalPages){
@@ -119,9 +134,11 @@ function renderPagination(totalPages){
   });
 }
 
+// Update role counters. If `items` provided, use it; otherwise show global totals from DATA.
 function updateRoleCounters(items){
-  const staff = items.filter(x=>x.role==="Staff").length;
-  const guest = items.filter(x=>x.role==="Guest").length;
+  const source = Array.isArray(items) ? items : DATA;
+  const staff = source.filter(x=>x.role==="Staff").length;
+  const guest = source.filter(x=>x.role==="Guest").length;
   staffCount.textContent = `Staff - ${staff}`;
   guestCount.textContent = `Guest - ${guest}`;
 }
@@ -158,8 +175,13 @@ function buildCalendar(){
     if (fmtDateOnly(d) === fmtDateOnly(selectedDate)) dayEl.classList.add("selected");
     dayEl.addEventListener("click", () => {
       selectedDate = new Date(d);
+      // set date range to this single day and run filter
+      const ds = fmtDateOnly(d);
+      if(fFrom) fFrom.value = ds;
+      if(fTo) fTo.value = ds;
       setCurrentDateLabel();
       buildCalendar();
+      currentPage = 1;
       renderTable();
     });
     calendarGrid.appendChild(dayEl);
@@ -244,8 +266,10 @@ document.addEventListener("keydown", (e) => {
 });
 
 btnLogout?.addEventListener("click", () => {
-  alert("Logged out");
+  // Clear login and redirect to login page
+  try{ localStorage.removeItem('loggedIn'); localStorage.removeItem('user'); }catch(e){}
   toggleDropdown(false);
+  window.location.href = 'login.html';
 });
 
 function init(){
@@ -254,5 +278,11 @@ function init(){
   buildCalendar();
   renderTable();
 }
+
+// show logged in user in header (if element exists)
+try{
+  const userEl = document.getElementById('userName');
+  if(userEl) userEl.textContent = localStorage.getItem('user') || '';
+}catch(e){}
 
 init();

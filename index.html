@@ -15,6 +15,7 @@
       <button id="avatarBtn" class="avatar-btn" aria-haspopup="true" aria-expanded="false">
         <span class="avatar-ico">👤</span>
       </button>
+      <div style="display:inline-block; margin-left:10px; vertical-align:middle; font-size:0.95rem; color:#0f172a"> <span id="userName"></span></div>
       <div id="userDropdown" class="dropdown" hidden>
         <button id="btnLogout" class="dropdown-item">
           <span class="item-ico" aria-hidden="true">↩</span>
@@ -92,6 +93,7 @@
         <input id="calendarSearch" class="search" type="text" placeholder="Search..." />
         <div class="calendar-grid" id="calendarGrid"></div>
         <div class="role-counters">
+          <label style="display:block; margin-bottom:8px; font-size:13px; color:#334155"><input id="showFilteredCounts" type="checkbox" style="margin-right:8px"/>Show filtered counts</label>
           <span class="tag" id="staffCount">Staff - 0</span>
           <span class="tag" id="guestCount">Guest - 0</span>
         </div>
@@ -101,6 +103,7 @@
 
   <footer class="footer-note">Prepared by Taghiyev Mahammad</footer>
 
+  <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

@@ -21,25 +21,34 @@ Designed according to Figures **1.0** and **1.1**.
 - The **current date** is displayed in the center (“date” field).  
 - The **selected date** is visually highlighted in the calendar view.
 
-### 🔹 Main Table
-- Displays filtered data results.  
-- Supports **pagination** for easier navigation.  
-- Shows **“No data available”** when no matching records are found.  
-- Includes a **dynamic search bar** similar to the one shown in the design.  
+Peerstack-Final — Multi-filter & Calendar Dashboard
 
----
+This project is a lightweight dashboard built with plain HTML, CSS and JavaScript. It includes:
 
-## 🛠️ Technologies Used
-- HTML / CSS / JavaScript    
-- Excalidraw (for design layout reference)
----
+- A multi-filter panel for Full Name, FIN, Date range and Role.
+- A paginated data table with a no-data state.
+- A calendar panel with prev/next navigation and selectable days.
+- Staff / Guest counters (global totals by default, optional filtered totals).
+- A small login system using localStorage (demo credentials: `admin` / `1234`).
 
-## 🚀 Live Demo
-https://peerstackfinal.netlify.app/
----
+## Quick start
 
-## 📂 Installation
-```bash
-# Clone this repository
-git clone https://github.com/TaghiyevMahammad/Peerstack-Final.git
-# Open index.html or start the dev server 
+1. Open `login.html` in your browser (double-click or serve with a static server).
+2. Login with: `admin` / `1234`.
+3. You will be redirected to `index.html` (dashboard).
+
+## Files
+
+- `login.html` — login page
+- `index.html` — dashboard UI
+- `styles.css` — styling and responsive rules
+- `app.js` — main logic (filters, calendar, pagination, auth)
+- `data.js` — optional external dataset (exports `window.TABLE_DATA`)
+
+## Notes
+
+- The app prefers `data.js` if present; otherwise it will generate demo data.
+- Role counters are global by default; use the “Show filtered counts” checkbox to toggle filtered totals.
+- Clicking a calendar day sets the From/To date inputs to that day and runs the search.
+
+If you want extra features (CSV export, column sorting, or server-side paging) tell me which to add next.

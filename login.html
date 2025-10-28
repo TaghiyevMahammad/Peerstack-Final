@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Peerstack</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="centered-container">
+    <div class="card login-card" aria-labelledby="loginTitle">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px;">
+        <img src="images/peerstack.png" alt="Peerstack" style="height:36px;display:block;" onerror="this.style.display='none'" />
+        <div>
+          <h2 id="loginTitle" style="margin:0;font-size:1.2rem;">Sign in</h2>
+          <div class="muted" style="font-size:0.9rem">Access the Multi-filter Dashboard</div>
+        </div>
+      </div>
+      <form id="loginForm" style="display:grid;gap:10px;">
+        <label class="field"><span class="small muted">Username</span><input id="username" type="text" placeholder="admin" required /></label>
+        <label class="field"><span class="small muted">Password</span><input id="password" type="password" placeholder="1234" required /></label>
+        <div style="display:flex; gap:8px; margin-top:6px;">
+          <button type="submit" class="btn primary">Login</button>
+          <button type="button" id="demoBtn" class="btn">Fill demo</button>
+        </div>
+      </form>
+      <p class="small muted" style="margin-top:10px">Use <strong>admin</strong> / <strong>1234</strong></p>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      const credentials = { username: 'admin', password: '1234' };
+      const form = document.getElementById('loginForm');
+      const demo = document.getElementById('demoBtn');
+
+      // If already logged in, go to dashboard (index.html)
+      try{ if(localStorage.getItem('loggedIn') === 'true') location.href = 'index.html'; }catch(e){}
+
+      form.addEventListener('submit', function(e){
+        e.preventDefault();
+        const u = document.getElementById('username').value.trim();
+        const p = document.getElementById('password').value;
+        if(u === credentials.username && p === credentials.password){
+          localStorage.setItem('loggedIn','true');
+          localStorage.setItem('user', u);
+          location.href = 'index.html';
+        } else {
+          alert('Invalid credentials');
+        }
+      });
+
+      demo.addEventListener('click', ()=>{
+        document.getElementById('username').value = credentials.username;
+        document.getElementById('password').value = credentials.password;
+      });
+    })();
+  </script>
+</body>
+</html>
