@@ -1,4 +1,62 @@
 // Enforce login: if not logged in, redirect to login.html
+try{ const ds = document.getElementById('dataStatus'); if(ds) ds.textContent = 'Sample'; }catch(e){}
+// Toast helper
+function showToast(msg, ms=2500){
+  try{
+  let t = document.getElementById('appToast');
+  if(!t){ t = document.createElement('div'); t.id='appToast'; t.className='toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=>{ t.classList.remove('show'); }, ms);
+  }catch(e){ console.log(msg); }
+}
+// Wire reload button and show spinner while fetching
+try{
+  const reloadBtn = document.getElementById('dataReloadBtn');
+  const ds = document.getElementById('dataStatus');
+  if(reloadBtn){
+  reloadBtn.addEventListener('click', async ()=>{
+  // show spinner
+  let spinner = document.createElement('span'); spinner.className='data-spinner';
+  try{ if(ds && ds.parentNode) ds.parentNode.insertBefore(spinner, ds.nextSibling); else reloadBtn.parentNode.appendChild(spinner); }catch(e){ try{ reloadBtn.parentNode.appendChild(spinner); }catch(e){} }
+  try{
+  const res = await (window.fetchExternalData ? window.fetchExternalData() : Promise.resolve({ok:false,source:'sample'}));
+  if(res && res.ok){
+          if(ds) ds.textContent = 'Live';
+          showToast('Live sheet loaded');
+  } else {
+          if(ds) ds.textContent = 'Sample';
+          showToast('Live sheet unavailable — using sample');
+  }
+  }catch(e){ if(ds) ds.textContent = 'Sample'; showToast('Fetch failed — using sample'); }
+  spinner.remove();
+  });
+  }
+}catch(e){}
+window.addEventListener('tableDataLoaded', (e)=>{
+  try{
+  if(window.TABLE_DATA && Array.isArray(window.TABLE_DATA) && window.TABLE_DATA.length>0){
+  DATA = window.TABLE_DATA;
+  // rebuild calendar / table counts and render
+  updateRoleCounters();
+  renderTable();
+  // update data status badge if present
+  try{
+        const ds = document.getElementById('dataStatus');
+        const detail = (e && e.detail) ? e.detail : undefined;
+  if(ds){
+          const source = (window.TABLE_DATA_SOURCE || (detail && detail.source)) || 'sample';
+          ds.textContent = (source === 'live') ? 'Live' : (source === 'loading' ? 'Loading' : 'Sample');
+          if(window.TABLE_DATA_LOADED_AT) ds.title = `Loaded: ${window.TABLE_DATA_LOADED_AT}`;
+  }
+  // show toast with source info
+  const src = (window.TABLE_DATA_SOURCE || (detail && detail.source)) || 'sample';
+  showToast(src === 'live' ? 'Live data loaded' : 'Using sample data');
+  }catch(e){}
+  }
+  }catch(e){ /* ignore */ }
+});
+// Enforce login: if not logged in, redirect to login.html
 try{
   const isLoginPage = window.location.pathname.toLowerCase().endsWith('login.html');
   if(!isLoginPage && localStorage.getItem('loggedIn') !== 'true'){
@@ -63,7 +121,7 @@ function seedData(){
 }
 
 // Prefer external data if provided in data.js (window.TABLE_DATA). Otherwise use seeded data.
-const DATA = (window.TABLE_DATA && Array.isArray(window.TABLE_DATA) && window.TABLE_DATA.length>0) ? window.TABLE_DATA : seedData();
+let DATA = (window.TABLE_DATA && Array.isArray(window.TABLE_DATA) && window.TABLE_DATA.length>0) ? window.TABLE_DATA : seedData();
 
 function filterData(){
   let q = tableSearch.value.trim().toLowerCase();
@@ -286,3 +344,7 @@ try{
 }catch(e){}
 
 init();
+
+// If external data is loaded later (data.js fetch), update DATA and rerender
+// set initial data status (Sample by default)
+try{ const ds = document.getElementById('dataStatus'); if(ds) ds.textContent = 'Sample'; }catch(e){}

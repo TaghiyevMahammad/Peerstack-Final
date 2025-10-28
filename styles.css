@@ -374,3 +374,14 @@ body {
 .btn.primary { background: linear-gradient(180deg,#3b82f6,#2563eb); color: #fff; border: none }
 .btn { transition: background .18s ease, transform .06s ease }
 .btn:active{ transform: translateY(1px) }
+
+/* data status badge (small pill) */
+.data-status{ display:inline-block; font-size:0.75rem; padding:4px 8px; border-radius:999px; background:#eef2ff; color:#1e40af; border:1px solid #dbeafe }
+
+/* spinner for data reload */
+.data-spinner{ display:inline-block; width:14px; height:14px; border-radius:50%; border:2px solid rgba(0,0,0,0.08); border-top-color:#2563eb; animation:spin .9s linear infinite; margin-left:6px; vertical-align:middle }
+@keyframes spin{ to{ transform:rotate(360deg) } }
+
+/* toast */
+.toast{ position:fixed; right:16px; bottom:72px; background:rgba(17,24,39,0.95); color:#fff; padding:10px 14px; border-radius:8px; box-shadow:0 6px 18px rgba(2,6,23,0.4); opacity:0; transform:translateY(10px); transition:opacity .18s ease, transform .18s ease; z-index:9999 }
+.toast.show{ opacity:1; transform:translateY(0) }

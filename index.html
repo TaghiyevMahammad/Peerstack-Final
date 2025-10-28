@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Excalidraw UI – Multi-filter & Calendar Layout</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <header class="app-header">
     <div class="brand">
@@ -15,7 +17,11 @@
       <button id="avatarBtn" class="avatar-btn" aria-haspopup="true" aria-expanded="false">
         <span class="avatar-ico">👤</span>
       </button>
-      <div style="display:inline-block; margin-left:10px; vertical-align:middle; font-size:0.95rem; color:#0f172a"> <span id="userName"></span></div>
+      <div style="display:inline-block; margin-left:10px; vertical-align:middle; font-size:0.95rem; color:#0f172a">
+        <span id="userName"></span>
+        <span id="dataStatus" class="data-status" title="Data source" style="margin-left:8px;">Sample</span>
+        <button id="dataReloadBtn" class="btn" title="Reload live sheet" style="margin-left:8px;padding:4px 8px;font-size:0.8rem">Reload</button>
+      </div>
       <div id="userDropdown" class="dropdown" hidden>
         <button id="btnLogout" class="dropdown-item">
           <span class="item-ico" aria-hidden="true">↩</span>
@@ -93,7 +99,8 @@
         <input id="calendarSearch" class="search" type="text" placeholder="Search..." />
         <div class="calendar-grid" id="calendarGrid"></div>
         <div class="role-counters">
-          <label style="display:block; margin-bottom:8px; font-size:13px; color:#334155"><input id="showFilteredCounts" type="checkbox" style="margin-right:8px"/>Show filtered counts</label>
+          <label style="display:block; margin-bottom:8px; font-size:13px; color:#334155"><input id="showFilteredCounts"
+              type="checkbox" style="margin-right:8px" />Show filtered counts</label>
           <span class="tag" id="staffCount">Staff - 0</span>
           <span class="tag" id="guestCount">Guest - 0</span>
         </div>
@@ -106,4 +113,5 @@
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
+
 </html>
