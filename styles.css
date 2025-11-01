@@ -66,6 +66,30 @@ body {
 
 .user-menu { position: relative }
 
+/* Responsive user-menu: align items and allow wrapping when space is tight */
+.user-menu{ display:flex; align-items:center; gap:10px }
+.user-menu > div{ display:flex; align-items:center; gap:8px; flex-wrap:wrap }
+.user-menu #userName{ margin-left:4px; font-weight:600 }
+
+/* Make brand image scale on smaller viewports so header elements have room */
+.brand img{ max-width:150px; height:auto }
+
+@media (max-width:680px){
+  .brand img{ max-width:120px }
+  .data-status{ font-size:0.7rem; padding:3px 6px }
+  .user-menu > div{ gap:6px }
+}
+
+@media (max-width:520px){
+  /* On small screens hide the username to save space and let badge + button fit */
+  .user-menu #userName{ display:none }
+  .data-status{ font-size:0.7rem; padding:3px 6px }
+  #dataReloadBtn{ padding:4px 8px; font-size:0.75rem }
+  .avatar-btn{ width:34px; height:34px }
+  .avatar-ico{ font-size:14px }
+  .app-header{ padding:8px 10px }
+}
+
 .avatar-btn {
   width: 36px;
   height: 36px;
@@ -90,6 +114,12 @@ body {
   min-width: 160px;
   box-shadow: 0 2px 0 rgba(15, 23, 42, 0.06)
 }
+
+/* Ensure elements using the HTML `hidden` attribute are not visible
+   (some browsers/styles may override). This keeps the logout dropdown
+   hidden until the avatar/profile is clicked. */
+.dropdown[hidden]{ display: none !important; }
+.dropdown{ z-index: 999; }
 
 .dropdown-item {
   width: 100%;
