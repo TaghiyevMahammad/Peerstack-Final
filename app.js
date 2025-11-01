@@ -249,6 +249,8 @@ function buildCalendar(){
 function goPrevDay(){
   selectedDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate()-1);
   viewMonthDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+  // set date filters to the selected date so table shows people for that day
+  try{ const ds = fmtDateOnly(selectedDate); if(fFrom) fFrom.value = ds; if(fTo) fTo.value = ds; }catch(e){}
   setCurrentDateLabel();
   buildCalendar();
   renderTable();
@@ -257,6 +259,8 @@ function goPrevDay(){
 function goNextDay(){
   selectedDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), selectedDate.getDate()+1);
   viewMonthDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+  // set date filters to the selected date so table shows people for that day
+  try{ const ds = fmtDateOnly(selectedDate); if(fFrom) fFrom.value = ds; if(fTo) fTo.value = ds; }catch(e){}
   setCurrentDateLabel();
   buildCalendar();
   renderTable();
@@ -275,16 +279,27 @@ function resetFilters(){
 
 function setToday(){
   const t = fmtDateOnly(new Date());
-  fFrom.value = t;
-  fTo.value = t;
+  // set both date inputs (From/To) to today's date and update calendar
+  if(fFrom) fFrom.value = t;
+  if(fTo) fTo.value = t;
   selectedDate = parseISODate(t);
   viewMonthDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
   setCurrentDateLabel();
   buildCalendar();
 }
 
+// Set calendar view to today without modifying filter inputs (From/To)
+function setCalendarViewToToday(){
+  const now = new Date();
+  selectedDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  viewMonthDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1);
+  setCurrentDateLabel();
+  buildCalendar();
+}
+
 btnSearch.addEventListener("click", () => { currentPage = 1; renderTable(); });
-btnReset.addEventListener("click", () => { resetFilters(); setToday(); renderTable(); });
+// Reset: clear filters (including From/To) and reset calendar view to today
+btnReset.addEventListener("click", () => { resetFilters(); setCalendarViewToToday(); renderTable(); });
 btnToday.addEventListener("click", () => { setToday(); renderTable(); });
 
 prevDayBtn.addEventListener("click", goPrevDay);
@@ -292,6 +307,12 @@ nextDayBtn.addEventListener("click", goNextDay);
 
 tableSearch.addEventListener("input", () => { currentPage = 1; renderTable(); });
 calendarSearch.addEventListener("input", () => { currentPage = 1; renderTable(); });
+
+// When user toggles show filtered counts, update counters immediately
+try{
+  const showFilteredCheckbox = document.getElementById('showFilteredCounts');
+  showFilteredCheckbox?.addEventListener('change', () => { currentPage = 1; renderTable(); });
+}catch(e){}
 
 function toggleDropdown(force){
   if (!userDropdown || !avatarBtn) return;
